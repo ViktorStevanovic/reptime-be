@@ -16,7 +16,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  private async generateTokens(payload: { email: string; sub: string }) {
+  private async generateTokens(payload: {
+    email: string;
+    sub: string;
+    role: string;
+  }) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, { expiresIn: '15m' }),
       this.jwtService.signAsync(payload, { expiresIn: '7d' }),
@@ -34,7 +38,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, role: user.role.code };
     const tokens = await this.generateTokens(payload);
 
     const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
@@ -54,7 +58,7 @@ export class AuthService {
       throw new ForbiddenException('Access denied');
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, role: user.role.code };
     const tokens = await this.generateTokens(payload);
 
     const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);

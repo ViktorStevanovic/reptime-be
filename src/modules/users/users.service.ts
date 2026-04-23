@@ -12,11 +12,11 @@ export class UsersService {
   ) {}
 
   findOne(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ email: email });
+    return this.userRepository.findOne({ email }, { populate: ['role'] });
   }
 
   findById(id: string): Promise<User | null> {
-    return this.userRepository.findOne({ id });
+    return this.userRepository.findOne({ id }, { populate: ['role'] });
   }
 
   async updateRefreshToken(

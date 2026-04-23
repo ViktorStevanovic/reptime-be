@@ -1,4 +1,5 @@
 import { defineEntity, p } from '@mikro-orm/core';
+import { UserRole } from '../user-roles/user-role.entity';
 
 const UserSchema = defineEntity({
   name: 'User',
@@ -10,6 +11,7 @@ const UserSchema = defineEntity({
     email: p.string().unique(),
     password: p.string().hidden(),
     hashedRefreshToken: p.string().nullable().hidden(),
+    role: p.manyToOne(UserRole),
     createdAt: p.datetime().defaultRaw('now()'),
     updatedAt: p.datetime().defaultRaw('now()'),
   },
