@@ -13,7 +13,10 @@ const UserSchema = defineEntity({
     hashedRefreshToken: p.string().nullable().hidden(),
     role: p.manyToOne(UserRole),
     createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p.datetime().defaultRaw('now()'),
+    updatedAt: p
+      .datetime()
+      .defaultRaw('now()')
+      .onUpdate(() => new Date()),
   },
 });
 
