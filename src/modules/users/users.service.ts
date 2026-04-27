@@ -42,7 +42,7 @@ export class UsersService {
       role,
     });
 
-    if (role.code === Role.TRAINER) {
+    if (role.code.toString() === Role.TRAINER.toString()) {
       if (!dto.trainerProfile) {
         throw new BadRequestException(
           'trainerProfile is required for trainer role',
@@ -56,7 +56,7 @@ export class UsersService {
       });
     }
 
-    if (role.code === Role.CLIENT) {
+    if (role.code.toString() === Role.CLIENT.toString()) {
       if (!dto.clientProfile) {
         throw new BadRequestException(
           'clientProfile is required for client role',

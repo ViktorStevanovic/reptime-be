@@ -8,6 +8,7 @@ import { TrainersModule } from './modules/trainers/trainers.module';
 import mikroOrmConfig from './mikro-orm.config';
 import { UserRolesModule } from './modules/user-roles/user-roles.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { ScheduleTemplatesModule } from './modules/schedule-templates/schedule-templates.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ClientsModule } from './modules/clients/clients.module';
     UserRolesModule,
     TrainersModule,
     ClientsModule,
+    ScheduleTemplatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

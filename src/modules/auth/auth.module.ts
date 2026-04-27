@@ -6,6 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
+import { ResolveUserInterceptor } from '../../common/interceptors/resolve-user.interceptor';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { RolesGuard } from '../../common/guards/roles.guard';
     {
       provide: 'APP_GUARD',
       useClass: RolesGuard,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: ResolveUserInterceptor,
     },
   ],
 })
