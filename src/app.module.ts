@@ -12,6 +12,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { ScheduleTemplatesModule } from './modules/schedule-templates/schedule-templates.module';
 import { AvailabilitySlotsModule } from './modules/availability-slots/availability-slots.module';
 import { AvailabilityOverridesModule } from './modules/availability-overrides/availability-overrides.module';
+import { AppointmentsModule } from './modules/appointments/appointments.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AvailabilityOverridesModule } from './modules/availability-overrides/av
     ScheduleTemplatesModule,
     AvailabilitySlotsModule,
     AvailabilityOverridesModule,
+    AppointmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
