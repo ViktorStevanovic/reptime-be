@@ -11,6 +11,7 @@ import { UserRolesModule } from './modules/user-roles/user-roles.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ScheduleTemplatesModule } from './modules/schedule-templates/schedule-templates.module';
 import { AvailabilitySlotsModule } from './modules/availability-slots/availability-slots.module';
+import { AvailabilityOverridesModule } from './modules/availability-overrides/availability-overrides.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AvailabilitySlotsModule } from './modules/availability-slots/availabili
     ClientsModule,
     ScheduleTemplatesModule,
     AvailabilitySlotsModule,
+    AvailabilityOverridesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

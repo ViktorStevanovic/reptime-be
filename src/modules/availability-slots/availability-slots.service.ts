@@ -6,6 +6,7 @@ import {
   FilterQuery,
 } from '@mikro-orm/postgresql';
 import { AvailabilitySlot } from './availability-slot.entity';
+import { AvailabilityOverride } from '../availability-overrides/availability-override.entity';
 import { Client } from '../clients/client.entity';
 import type { LoggedUserPayload } from '../../common/decorators/logged-user.decorator';
 
@@ -53,8 +54,37 @@ export class AvailabilitySlotsService {
         { date: today, startTime: { $gte: currentTime } },
       ],
     };
-    return this.slotRepository.find(where, {
+
+    const slots = await this.slotRepository.find(where, {
       orderBy: { date: 'asc', startTime: 'asc' },
+    });
+
+    const overrides = await this.em.find(AvailabilityOverride, {
+      trainer: trainerId,
+      startDate: { $lte: date ?? slots.at(-1)?.date ?? today },
+      endDate: { $gte: date ?? today },
+    });
+
+    if (overrides.length === 0) {
+      return slots;
+    }
+
+    return slots.filter((slot) => !this.isOverridden(slot, overrides));
+  }
+
+  private isOverridden(
+    slot: AvailabilitySlot,
+    overrides: AvailabilityOverride[],
+  ): boolean {
+    const slotDate = String(slot.date);
+    return overrides.some((o) => {
+      if (slotDate < String(o.startDate) || slotDate > String(o.endDate)) {
+        return false;
+      }
+      if (o.fullDay) {
+        return true;
+      }
+      return slot.startTime >= o.startTime! && slot.startTime < o.endTime!;
     });
   }
 }

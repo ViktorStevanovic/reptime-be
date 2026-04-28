@@ -9,7 +9,9 @@ describe('ScheduleTemplatesController', () => {
       controllers: [ScheduleTemplatesController],
     }).compile();
 
-    controller = module.get<ScheduleTemplatesController>(ScheduleTemplatesController);
+    controller = module.get<ScheduleTemplatesController>(
+      ScheduleTemplatesController,
+    );
   });
 
   it('should be defined', () => {
