@@ -15,7 +15,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
     private readonly em: EntityManager,
-  ) {}
+  ) { }
 
   findAll(): Promise<User[]> {
     return this.userRepository.findAll({ populate: ['role'] });
@@ -63,18 +63,19 @@ export class UsersService {
           'clientProfile is required for client role',
         );
       }
+      const { clientProfile } = dto;
       const trainer = await this.em.findOneOrFail(Trainer, {
-        id: dto.clientProfile.trainerId,
+        id: clientProfile.trainerId,
       });
       this.em.create(Client, {
         user,
         trainer,
         createdBy,
-        dateOfBirth: dto.clientProfile.dateOfBirth ?? null,
-        gender: dto.clientProfile.gender ?? null,
-        heightCm: dto.clientProfile.heightCm ?? null,
-        goal: dto.clientProfile.goal ?? null,
-        notes: dto.clientProfile.notes ?? null,
+        dateOfBirth: clientProfile.dateOfBirth ?? null,
+        gender: clientProfile.gender ?? null,
+        heightCm: clientProfile.heightCm ?? null,
+        goal: clientProfile.goal ?? null,
+        notes: clientProfile.notes ?? null,
       });
     }
 
