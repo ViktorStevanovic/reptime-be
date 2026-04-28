@@ -26,22 +26,21 @@ export class CreateClientDto {
   password!: string;
 
   @IsOptional()
-  @IsString()
-  phoneNumber?: string;
-
-  @IsOptional()
   @IsDateString()
   dateOfBirth?: string;
 
   @IsOptional()
-  @IsInt()
-  @Min(0)
-  height?: number;
+  @IsString()
+  gender?: string;
 
   @IsOptional()
   @IsInt()
   @Min(0)
-  weight?: number;
+  heightCm?: number;
+
+  @IsOptional()
+  @IsString()
+  goal?: string;
 
   @IsOptional()
   @IsString()

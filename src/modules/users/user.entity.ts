@@ -10,6 +10,7 @@ const UserSchema = defineEntity({
     surname: p.string(),
     email: p.string().unique(),
     password: p.string().hidden(),
+    phoneNumber: p.string().nullable(),
     hashedRefreshToken: p.string().nullable().hidden(),
     role: p.manyToOne(UserRole),
     createdAt: p.datetime().defaultRaw('now()'),

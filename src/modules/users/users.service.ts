@@ -39,6 +39,7 @@ export class UsersService {
       surname: dto.surname,
       email: dto.email,
       password: hashedPassword,
+      phoneNumber: dto.phoneNumber ?? null,
       role,
     });
 
@@ -69,10 +70,10 @@ export class UsersService {
         user,
         trainer,
         createdBy,
-        phoneNumber: dto.clientProfile.phoneNumber ?? null,
         dateOfBirth: dto.clientProfile.dateOfBirth ?? null,
-        height: dto.clientProfile.height ?? null,
-        weight: dto.clientProfile.weight ?? null,
+        gender: dto.clientProfile.gender ?? null,
+        heightCm: dto.clientProfile.heightCm ?? null,
+        goal: dto.clientProfile.goal ?? null,
         notes: dto.clientProfile.notes ?? null,
       });
     }

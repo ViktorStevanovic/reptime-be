@@ -10,10 +10,10 @@ const ClientSchema = defineEntity({
     user: p.oneToOne(User),
     trainer: p.manyToOne(Trainer),
     createdBy: p.manyToOne(User),
-    phoneNumber: p.string().nullable(),
     dateOfBirth: p.date().nullable(),
-    height: p.smallint().nullable(), //cm
-    weight: p.smallint().nullable(), //grams
+    gender: p.string().nullable(),
+    heightCm: p.smallint().nullable(),
+    goal: p.string().nullable(),
     notes: p.text().nullable(),
     createdAt: p.datetime().defaultRaw('now()'),
     updatedAt: p

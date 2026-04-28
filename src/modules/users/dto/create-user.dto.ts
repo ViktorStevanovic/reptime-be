@@ -24,22 +24,21 @@ export class CreateTrainerProfileDto {
 
 export class CreateClientProfileDto {
   @IsOptional()
-  @IsString()
-  phoneNumber?: string;
-
-  @IsOptional()
   @IsDateString()
   dateOfBirth?: string;
 
   @IsOptional()
-  @IsInt()
-  @Min(0)
-  height?: number;
+  @IsString()
+  gender?: string;
 
   @IsOptional()
   @IsInt()
   @Min(0)
-  weight?: number;
+  heightCm?: number;
+
+  @IsOptional()
+  @IsString()
+  goal?: string;
 
   @IsOptional()
   @IsString()
@@ -64,6 +63,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(8)
   password!: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
 
   @IsUUID()
   roleId!: string;
