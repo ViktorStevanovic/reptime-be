@@ -9,6 +9,7 @@ import mikroOrmConfig from './mikro-orm.config';
 import { UserRolesModule } from './modules/user-roles/user-roles.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ScheduleTemplatesModule } from './modules/schedule-templates/schedule-templates.module';
+import { AvailabilitySlotsModule } from './modules/availability-slots/availability-slots.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ScheduleTemplatesModule } from './modules/schedule-templates/schedule-t
     TrainersModule,
     ClientsModule,
     ScheduleTemplatesModule,
+    AvailabilitySlotsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
