@@ -10,6 +10,7 @@ const TrainerSchema = defineEntity({
     createdBy: p.manyToOne(User),
     bio: p.text().nullable(),
     specialization: p.string().nullable(),
+    slotGenerationDays: p.smallint().default(21),
     createdAt: p.datetime().defaultRaw('now()'),
     updatedAt: p
       .datetime()

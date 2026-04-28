@@ -37,13 +37,22 @@ export class AvailabilitySlotsService {
     date?: string,
   ): Promise<AvailabilitySlot[]> {
     const trainerId = await this.resolveTrainerId(user);
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const currentTime =
+      now.getHours().toString().padStart(2, '0') +
+      ':' +
+      now.getMinutes().toString().padStart(2, '0');
+
     const where: FilterQuery<AvailabilitySlot> = {
       trainer: trainerId,
       active: true,
+      date: date && date >= today ? date : { $gte: today },
+      $or: [
+        { date: { $gt: today } },
+        { date: today, startTime: { $gte: currentTime } },
+      ],
     };
-    if (date) {
-      where.date = date;
-    }
     return this.slotRepository.find(where, {
       orderBy: { date: 'asc', startTime: 'asc' },
     });

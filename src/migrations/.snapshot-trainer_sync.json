@@ -354,6 +354,22 @@
           "enumItems": [],
           "mappedType": "string"
         },
+        "slot_generation_days": {
+          "name": "slot_generation_days",
+          "type": "smallint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "21",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",

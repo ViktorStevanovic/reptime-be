@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { TrainersModule } from './modules/trainers/trainers.module';
@@ -14,6 +15,7 @@ import { AvailabilitySlotsModule } from './modules/availability-slots/availabili
 @Module({
   imports: [
     MikroOrmModule.forRoot(mikroOrmConfig),
+    ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
     UserRolesModule,
