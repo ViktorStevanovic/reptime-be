@@ -19,6 +19,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableCors();
   const orm = app.get(MikroORM);
   await orm.schema.ensureDatabase();
   await orm.schema.update();

@@ -9,7 +9,7 @@ const AppointmentSchema = defineEntity({
   properties: {
     id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
     trainer: p.manyToOne(Trainer),
-    client: p.manyToOne(Client),
+    client: () => p.manyToOne(Client),
     slot: p.manyToOne(AvailabilitySlot),
     status: p.string().default('scheduled'),
     createdAt: p.datetime().defaultRaw('now()'),

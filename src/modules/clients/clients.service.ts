@@ -29,6 +29,18 @@ export class ClientsService {
     return this.clientRepository.find({ trainer: trainerId });
   }
 
+  async findOne(id: string, trainerId: string): Promise<Client> {
+    const client = await this.clientRepository.findOne(
+      { id, trainer: trainerId },
+      { populate: ['user', 'biaScans', 'appointments.slot'] },
+    );
+    if (!client) {
+      throw new NotFoundException('Client not found');
+    }
+
+    return client;
+  }
+
   async create(dto: CreateClientDto, trainerId: string): Promise<Client> {
     const existingUser = await this.em.findOne(User, { email: dto.email });
     if (existingUser) {

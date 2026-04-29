@@ -1,6 +1,8 @@
 import { defineEntity, p } from '@mikro-orm/core';
 import { User } from '../users/user.entity';
 import { Trainer } from '../trainers/trainer.entity';
+import { ClientBiaScan } from './client-bia-scan.entity';
+import { Appointment } from '../appointments/appointment.entity';
 
 const ClientSchema = defineEntity({
   name: 'Client',
@@ -15,6 +17,8 @@ const ClientSchema = defineEntity({
     heightCm: p.smallint().nullable(),
     goal: p.string().nullable(),
     notes: p.text().nullable(),
+    biaScans: () => p.oneToMany(ClientBiaScan).mappedBy('client'),
+    appointments: () => p.oneToMany(Appointment).mappedBy('client'),
     createdAt: p.datetime().defaultRaw('now()'),
     updatedAt: p
       .datetime()

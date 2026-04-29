@@ -8,9 +8,9 @@ const ClientBiaScanSchema = defineEntity({
   tableName: 'client_bia_scans',
   properties: {
     id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    client: p.manyToOne(Client),
+    client: () => p.manyToOne(Client),
     trainer: p.manyToOne(Trainer),
-    appointment: p.manyToOne(Appointment).nullable(),
+    appointment: () => p.manyToOne(Appointment).nullable(),
     measuredAt: p.datetime(),
     weight: p.integer(), // grams
     bodyFatPercentage: p.double().nullable(),

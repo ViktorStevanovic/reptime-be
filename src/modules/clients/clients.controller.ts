@@ -20,6 +20,14 @@ export class ClientsController {
     return this.clientsService.findAll(user.trainerId as string);
   }
 
+  @Get(':id')
+  async detail(
+    @Param('id') id: string,
+    @LoggedUser() user: LoggedUserPayload,
+  ): Promise<Client> {
+    return this.clientsService.findOne(id, user.trainerId as string);
+  }
+
   @Post()
   async create(
     @Body() dto: CreateClientDto,
