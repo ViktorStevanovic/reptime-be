@@ -1,25 +1,40 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/decorators/legacy';
 import { UserRole } from '../user-roles/user-role.entity';
 
-const UserSchema = defineEntity({
-  name: 'User',
-  tableName: 'users',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    name: p.string(),
-    surname: p.string(),
-    email: p.string().unique(),
-    password: p.string().hidden(),
-    phoneNumber: p.string().nullable(),
-    hashedRefreshToken: p.string().nullable().hidden(),
-    role: p.manyToOne(UserRole),
-    createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p
-      .datetime()
-      .defaultRaw('now()')
-      .onUpdate(() => new Date()),
-  },
-});
+@Entity({ tableName: 'users' })
+export class User {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class User extends UserSchema.class {}
-UserSchema.setClass(User);
+  @Property()
+  name!: string;
+
+  @Property()
+  surname!: string;
+
+  @Property({ unique: true })
+  email!: string;
+
+  @Property({ hidden: true })
+  password!: string;
+
+  @Property({ nullable: true })
+  phoneNumber?: string;
+
+  @Property({ nullable: true, hidden: true })
+  hashedRefreshToken?: string;
+
+  @ManyToOne(() => UserRole)
+  role!: UserRole;
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+
+  @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
+  updatedAt!: Date;
+}

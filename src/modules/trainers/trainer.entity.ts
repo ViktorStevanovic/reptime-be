@@ -1,22 +1,35 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/decorators/legacy';
 import { User } from '../users/user.entity';
 
-const TrainerSchema = defineEntity({
-  name: 'Trainer',
-  tableName: 'trainers',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    user: p.oneToOne(User),
-    createdBy: p.manyToOne(User),
-    bio: p.text().nullable(),
-    specialization: p.string().nullable(),
-    slotGenerationDays: p.smallint().default(21),
-    createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p
-      .datetime()
-      .defaultRaw('now()')
-      .onUpdate(() => new Date()),
-  },
-});
-export class Trainer extends TrainerSchema.class {}
-TrainerSchema.setClass(Trainer);
+@Entity({ tableName: 'trainers' })
+export class Trainer {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
+
+  @OneToOne(() => User)
+  user!: User;
+
+  @ManyToOne(() => User)
+  createdBy!: User;
+
+  @Property({ type: 'text', nullable: true })
+  bio?: string;
+
+  @Property({ nullable: true })
+  specialization?: string;
+
+  @Property({ type: 'smallint', default: 21 })
+  slotGenerationDays!: number;
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+
+  @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
+  updatedAt!: Date;
+}

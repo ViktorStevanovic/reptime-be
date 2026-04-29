@@ -1,14 +1,13 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
-const UserRoleSchema = defineEntity({
-  name: 'UserRole',
-  tableName: 'user_roles',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    name: p.string(),
-    code: p.string().unique(),
-  },
-});
+@Entity({ tableName: 'user_roles' })
+export class UserRole {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class UserRole extends UserRoleSchema.class {}
-UserRoleSchema.setClass(UserRole);
+  @Property()
+  name!: string;
+
+  @Property({ unique: true })
+  code!: string;
+}

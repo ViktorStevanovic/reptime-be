@@ -1,24 +1,38 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { ClientBiaScan } from './client-bia-scan.entity';
 
-const ClientBiaCircumferenceSchema = defineEntity({
-  name: 'ClientBiaCircumference',
-  tableName: 'client_bia_circumferences',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    biaScan: p.oneToOne(ClientBiaScan),
-    chestCm: p.double().nullable(),
-    waistCm: p.double().nullable(),
-    hipsCm: p.double().nullable(),
-    leftArmCm: p.double().nullable(),
-    rightArmCm: p.double().nullable(),
-    leftThighCm: p.double().nullable(),
-    rightThighCm: p.double().nullable(),
-    leftCalfCm: p.double().nullable(),
-    rightCalfCm: p.double().nullable(),
-  },
-});
+@Entity({ tableName: 'client_bia_circumferences' })
+export class ClientBiaCircumference {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class ClientBiaCircumference
-  extends ClientBiaCircumferenceSchema.class {}
-ClientBiaCircumferenceSchema.setClass(ClientBiaCircumference);
+  @OneToOne(() => ClientBiaScan)
+  biaScan!: ClientBiaScan;
+
+  @Property({ type: 'double', nullable: true })
+  chestCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  waistCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  hipsCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  leftArmCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  rightArmCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  leftThighCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  rightThighCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  leftCalfCm?: number;
+
+  @Property({ type: 'double', nullable: true })
+  rightCalfCm?: number;
+}

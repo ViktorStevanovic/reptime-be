@@ -1,24 +1,37 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/decorators/legacy';
 import { Trainer } from '../trainers/trainer.entity';
 
-const AvailabilitySlotSchema = defineEntity({
-  name: 'AvailabilitySlot',
-  tableName: 'availability_slots',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    trainer: p.manyToOne(Trainer),
-    date: p.date(), // "2025-04-22"
-    startTime: p.string(), // "09:00"
-    endTime: p.string(), // "10:00"
-    active: p.boolean().default(true),
-    booked: p.boolean().default(false),
-    createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p
-      .datetime()
-      .defaultRaw('now()')
-      .onUpdate(() => new Date()),
-  },
-});
+@Entity({ tableName: 'availability_slots' })
+export class AvailabilitySlot {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class AvailabilitySlot extends AvailabilitySlotSchema.class {}
-AvailabilitySlotSchema.setClass(AvailabilitySlot);
+  @ManyToOne(() => Trainer)
+  trainer!: Trainer;
+
+  @Property({ type: 'date' })
+  date!: string; // "2025-04-22"
+
+  @Property()
+  startTime!: string; // "09:00"
+
+  @Property()
+  endTime!: string; // "10:00"
+
+  @Property({ default: true })
+  active!: boolean;
+
+  @Property({ default: false })
+  booked!: boolean;
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+
+  @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
+  updatedAt!: Date;
+}

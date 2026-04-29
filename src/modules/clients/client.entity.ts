@@ -1,30 +1,55 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import { Collection } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/decorators/legacy';
 import { User } from '../users/user.entity';
 import { Trainer } from '../trainers/trainer.entity';
 import { ClientBiaScan } from './client-bia-scan.entity';
 import { Appointment } from '../appointments/appointment.entity';
 
-const ClientSchema = defineEntity({
-  name: 'Client',
-  tableName: 'clients',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    user: p.oneToOne(User),
-    trainer: p.manyToOne(Trainer),
-    createdBy: p.manyToOne(User),
-    dateOfBirth: p.date().nullable(),
-    gender: p.string().nullable(),
-    heightCm: p.smallint().nullable(),
-    goal: p.string().nullable(),
-    notes: p.text().nullable(),
-    biaScans: () => p.oneToMany(ClientBiaScan).mappedBy('client'),
-    appointments: () => p.oneToMany(Appointment).mappedBy('client'),
-    createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p
-      .datetime()
-      .defaultRaw('now()')
-      .onUpdate(() => new Date()),
-  },
-});
-export class Client extends ClientSchema.class {}
-ClientSchema.setClass(Client);
+@Entity({ tableName: 'clients' })
+export class Client {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
+
+  @OneToOne(() => User)
+  user!: User;
+
+  @ManyToOne(() => Trainer)
+  trainer!: Trainer;
+
+  @ManyToOne(() => User)
+  createdBy!: User;
+
+  @Property({ type: 'date', nullable: true })
+  dateOfBirth?: string;
+
+  @Property({ nullable: true })
+  gender?: string;
+
+  @Property({ type: 'smallint', nullable: true })
+  heightCm?: number;
+
+  @Property({ nullable: true })
+  goal?: string;
+
+  @Property({ type: 'text', nullable: true })
+  notes?: string;
+
+  @OneToMany(() => ClientBiaScan, (scan) => scan.client)
+  biaScans = new Collection<ClientBiaScan>(this);
+
+  @OneToMany(() => Appointment, (appt) => appt.client)
+  appointments = new Collection<Appointment>(this);
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+
+  @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
+  updatedAt!: Date;
+}

@@ -1,24 +1,28 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { Trainer } from '../trainers/trainer.entity';
 import { Client } from '../clients/client.entity';
 import { AvailabilitySlot } from '../availability-slots/availability-slot.entity';
 
-const AppointmentSchema = defineEntity({
-  name: 'Appointment',
-  tableName: 'appointments',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    trainer: p.manyToOne(Trainer),
-    client: () => p.manyToOne(Client),
-    slot: p.manyToOne(AvailabilitySlot),
-    status: p.string().default('scheduled'),
-    createdAt: p.datetime().defaultRaw('now()'),
-    updatedAt: p
-      .datetime()
-      .defaultRaw('now()')
-      .onUpdate(() => new Date()),
-  },
-});
+@Entity({ tableName: 'appointments' })
+export class Appointment {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class Appointment extends AppointmentSchema.class {}
-AppointmentSchema.setClass(Appointment);
+  @ManyToOne(() => Trainer)
+  trainer!: Trainer;
+
+  @ManyToOne(() => Client)
+  client!: Client;
+
+  @ManyToOne(() => AvailabilitySlot)
+  slot!: AvailabilitySlot;
+
+  @Property({ default: 'scheduled' })
+  status!: string;
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+
+  @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
+  updatedAt!: Date;
+}

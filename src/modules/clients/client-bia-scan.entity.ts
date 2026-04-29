@@ -1,24 +1,37 @@
-import { defineEntity, p } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { Client } from './client.entity';
 import { Trainer } from '../trainers/trainer.entity';
 import { Appointment } from '../appointments/appointment.entity';
 
-const ClientBiaScanSchema = defineEntity({
-  name: 'ClientBiaScan',
-  tableName: 'client_bia_scans',
-  properties: {
-    id: p.uuid().primary().defaultRaw('gen_random_uuid()'),
-    client: () => p.manyToOne(Client),
-    trainer: p.manyToOne(Trainer),
-    appointment: () => p.manyToOne(Appointment).nullable(),
-    measuredAt: p.datetime(),
-    weight: p.integer(), // grams
-    bodyFatPercentage: p.double().nullable(),
-    muscleMass: p.integer().nullable(), // grams
-    notes: p.text().nullable(),
-    createdAt: p.datetime().defaultRaw('now()'),
-  },
-});
+@Entity({ tableName: 'client_bia_scans' })
+export class ClientBiaScan {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string;
 
-export class ClientBiaScan extends ClientBiaScanSchema.class {}
-ClientBiaScanSchema.setClass(ClientBiaScan);
+  @ManyToOne(() => Client)
+  client!: Client;
+
+  @ManyToOne(() => Trainer)
+  trainer!: Trainer;
+
+  @ManyToOne(() => Appointment, { nullable: true })
+  appointment?: Appointment;
+
+  @Property()
+  measuredAt!: Date;
+
+  @Property({ type: 'integer' })
+  weight!: number; // grams
+
+  @Property({ type: 'double', nullable: true })
+  bodyFatPercentage?: number;
+
+  @Property({ type: 'integer', nullable: true })
+  muscleMass?: number; // grams
+
+  @Property({ type: 'text', nullable: true })
+  notes?: string;
+
+  @Property({ defaultRaw: 'now()' })
+  createdAt!: Date;
+}
